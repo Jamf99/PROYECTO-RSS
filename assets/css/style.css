@@ -1,0 +1,108 @@
+body{
+  margin: 0;
+  padding: 0;
+  font-family: 'Roboto', sans-serif;
+  text-align: center;
+  background-image: url(image001.jpg);
+}
+
+/*INICIO DE SESIÓN */
+
+table{
+  margin : auto;
+  margin-top: 20px;
+  background-color: rgba(242,242,242,0.8);
+  border-radius: 10px;
+  border: 1px solid #000000;
+  width: 25%;
+  padding: 10px;ground-color: rgba(242,242,242,0.8);
+  margin-bottom: 20px;
+}
+
+.izq{
+  text-align: inherit;
+  font-size: 20px;
+  display: block;
+
+  color: black;
+}
+
+.der{
+  text-align: right;
+
+}
+
+td{
+  text-align: center;
+  padding: 10px;
+}
+
+.g-recaptcha{
+   display: inline-block;
+}
+
+input[type ="submit"]{
+  padding: 5px;
+  width: 40%;
+  background: #0098cb;
+  color: #fff;
+  margin-top: 10px;
+  border: 0;
+  border-radius: 3px;
+  cursor: pointer;
+  text-align: center;
+}
+
+a{
+  color:#3572CB;
+}
+
+/*REGISTRO USUARIO*/
+.container {
+  margin : auto;
+  margin-top: 20px;
+  background-color: rgba(242,242,242,0.8);
+  border-radius: 10px;
+  border: 1px solid #000000;
+  width: 300px;
+  padding: 10px;ground-color: rgba(242,242,242,0.8);
+  margin-bottom: 20px;
+	}
+
+
+	form{
+
+		display: block;
+		margin: auto;
+
+	}
+	label{
+		font-size: 25px;
+		display: block;
+		width: 100%;
+		color: black;
+    margin-bottom: 5px;
+    margin-top: 5px;
+    text-align: left;
+	}
+  input{
+    margin: 0 auto;
+  display: inline-block;
+  }
+
+.rg{
+  width: 90%;
+  padding: 5px;
+}
+
+/* cuenta Creada mensaje */
+.cntCreada{
+  margin : auto;
+  margin-top: 300px;
+  background-color: inherit;
+  border-radius: 10px;
+  border: 1px solid #000000;
+  width: 50%;
+  padding: 10px;ground-color: rgba(242,242,242,0.8);
+  margin-bottom: 20px;
+}
