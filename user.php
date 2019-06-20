@@ -1,8 +1,10 @@
 <?php
 
+  include_once 'db.php';
+
   class User extends DB{
 
-    private $UserEmail;
+    private $userEmail;
 
     public function userExists($email, $pass){
       $md5pass = md5($pass);
@@ -26,8 +28,8 @@
       }
     }
 
-    public getEmail(){
-      
+    public function getEmail(){
+      return $this->userEmail;
     }
 
   }
