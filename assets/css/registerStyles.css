@@ -1,0 +1,89 @@
+@import url('https://fonts.googleapis.com/css?family=Mali&display=swap');
+
+body {
+    font-family: 'Mali', cursive;
+    margin: 0;
+    background: url(images/fondo_opcional.jpg);
+    /*background-size: cover;*/
+    background-attachment: fixed;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+h1 {
+    text-align: center;
+    color: #cc1b4d;
+    font-size: 40px;
+}
+
+.form-register {
+    width: 98%;
+    max-width: 700px;
+    margin: auto;
+    background: #ffffff;
+    margin-top: 150px;
+    padding: 30px;
+    background: rgba(255, 255, 255, 0.8);
+    border-radius: 7px;
+}
+
+.input-contenedor {
+    padding: 10px 30px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    display: flex;
+    align-items: center;
+}
+
+input {
+    margin-bottom: 10px;
+    border : none;
+    padding: 10px;
+    font-size: 20px;
+    border-radius: 3px;
+}
+
+.input-48 {
+    width: 48%;
+}
+
+.input-contenedor input, .input-100 {
+    flex: 1 1;
+    margin-left : 1em;
+}
+
+.button {
+    border: none;
+    width: 100%;
+    color: white;
+    font-size: 20px;
+    background: #cc1b4d;
+    padding: 15px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.button:active {
+    transform: scale(1.50);
+}
+
+.button:hover {
+    background : #c41d34;
+}
+
+p {
+    text-align: center;
+}
+
+.link {
+    text-decoration: none;
+    color: #cc1b4d;
+    font-weight: 600;
+}
+
+.link:hover {
+    color: #c41d34;
+}
