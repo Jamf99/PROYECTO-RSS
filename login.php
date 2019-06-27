@@ -8,7 +8,7 @@
   </head>
   <body>
     <form method="post" class="formulario" style="margin-top:15px;">
-        <img src="assets/css/images/logo_principal.png" alt="" width="250px">
+        <a href="index.php"><img src="assets/css/images/logo_principal.png" alt="" width="250px"></a><br>
         <h1>Iniciar sesión</h1>
         <div class="contenedor">
             <div class="input-contenedor">
