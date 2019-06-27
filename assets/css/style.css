@@ -27,6 +27,7 @@ a {
   color: #fff;
   padding: 10px 20px;
   box-shadow: 0px 5px 0px #8c0b30;
+  border-radius: 10px;
 }
 
 a:hover {
