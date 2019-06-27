@@ -64,7 +64,7 @@ select, input[type="number"] {
 }
 
 .button:hover {
-    background : cadetblue;
+    background : #c41d34;
 }
 
 p {
