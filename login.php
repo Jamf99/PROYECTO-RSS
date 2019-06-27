@@ -11,17 +11,16 @@
         <img src="assets/css/images/logo_principal.png" alt="" width="250px">
         <h1>Iniciar sesión</h1>
         <div class="contenedor">
-            <div asp-validation-summary="All" class="text-danger"></div>
             <div class="input-contenedor">
                 <i class="fas fa-envelope icon"></i>
-                <input asp-for="Input.Email" placeholder="Correo Electrónico" type="email" required />
+                <input placeholder="Correo Electrónico" type="email" required />
             </div>
             <div class="input-contenedor">
                 <i class="fas fa-key icon"></i>
-                <input asp-for="Input.Password" placeholder="Contraseña" type="password" required />
+                <input placeholder="Contraseña" type="password" required />
             </div>
             <input type="submit" value="Iniciar sesión" class="button" />
-            <p>¿No tienes cuenta?<a class="link" href="/Identity/Account/Register"> Registrate aquí</a></p>
+            <p>¿No tienes cuenta?<a class="link" href="signup.php"> Registrate aquí</a></p>
         </div>
     </form>
   </body>
