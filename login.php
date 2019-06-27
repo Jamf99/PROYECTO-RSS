@@ -3,10 +3,12 @@
   <head>
     <meta charset="utf-8">
     <title>Login</title>
-    <link rel="stylesheet" href="/css/loginStyles.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" />
+    <link rel="stylesheet" href="assets/css/loginStyles.css">
   </head>
   <body>
-    <form method="post" class="formulario">
+    <form method="post" class="formulario" style="margin-top:15px;">
+        <img src="assets/css/images/logo_principal.png" alt="" width="250px">
         <h1>Iniciar sesión</h1>
         <div class="contenedor">
             <div asp-validation-summary="All" class="text-danger"></div>

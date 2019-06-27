@@ -1,8 +1,10 @@
+@import url('https://fonts.googleapis.com/css?family=Mali&display=swap');
+
 body {
-    margin: 0;
-    background: url(../images/numero.jpg);
-    background-size: cover;
+    font-family: 'Mali', cursive;
+    /*background-size: cover;*/
     background-attachment: fixed;
+    background: url(images/fondo_opcional.jpg);
 }
 
 * {
@@ -17,15 +19,17 @@ body {
 .formulario {
     background: #ffffff;
     margin : auto;
-    padding: 30px;
+    padding: 0 0 0 10px;
     background: rgba(255, 255, 255, 0.8);
     text-align : center;
 }
 
 h1 {
-    font-family: Arial;
+    padding: 0;
+    margin: 0;
+    margin-bottom: 30px;
     text-align : center;
-    color : #1a2537;
+    color : #cc1b4d;
     font-size : 40px;
 }
 
@@ -40,7 +44,6 @@ select, input[type="number"] {
 .input-contenedor {
     margin-bottom : 15px;
     border : 1px solid #aaa;
-    font-family: Arial;
 }
 
 .icon {
@@ -54,7 +57,7 @@ select, input[type="number"] {
     width: 100%;
     color: white;
     font-size: 20px;
-    background: #1a2537;
+    background: #cc1b4d;
     padding : 15px 20px;
     border-radius : 5px;
     cursor : pointer;
@@ -70,7 +73,7 @@ p {
 
 .link {
     text-decoration: none;
-    color: #1a2537;
+    color: #cc1b4d;
     font-weight : 600;
 }
 
