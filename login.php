@@ -32,7 +32,7 @@
   </head>
   <body>
     <form action="login.php" method="post" class="formulario" style="margin-top:15px;">
-        <a href="index.php"><img src="assets/css/images/logo_principal.png" alt="" width="250px"></a><br>
+        <a href="index.php"><img src="assets/images/logo_principal.png" alt="" width="250px"></a><br>
         <h1>Iniciar sesión</h1>
         <?php if(!empty($message)): ?>
           <p><b><?= $message ?></b></p>
