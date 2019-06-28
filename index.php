@@ -25,11 +25,18 @@
   </head>
   <body>
     <?php if(!empty($user)): ?>
-      <h1>Welcome <?= $user['name'] ?> !</h1>
-      <br><a href="logout.php">Cerrar Sesión</a>
+      <nav>
+        <div class="logo">
+          <a href="index.php"><img src="assets/images/logo_principal.png" alt="" width="70px"></a><br>
+        </div>
+        <ul class="nav-links">
+          <li><a>¡Hola! <?=$user['name']?></a></li>
+          <li><a href="logout.php">Cerrar sesión</a></li>
+        </ul>
+      </nav>
     <?php else: ?>
       <div class="contenedora">
-        <img src="assets/css/images/logo_principal.png" alt="" width="250px"><br>
+        <img src="assets/images/logo_principal.png" alt="" width="250px"><br>
         <a class="login" href="login.php">Iniciar Sesión</a>
         <a class="register" href="signup.php">Registrarse</a>
       </div>

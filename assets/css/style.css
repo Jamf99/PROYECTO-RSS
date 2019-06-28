@@ -8,9 +8,17 @@ body {
   margin: 0;
   padding: 0;
   font-family: 'Mali', cursive;
-  background: url(images/fondo_opcional.jpg);
+  background: url(../images/fondo_opcional.jpg);
   /*background-size: cover;*/
   background-attachment: fixed;
+}
+
+nav {
+  display : flex;
+  justify-content: space-around;
+  align-items: center;
+  min-height: 8vh;
+  background-color: #5d4954;
 }
 
 .contenedora {
@@ -18,7 +26,24 @@ body {
   padding-top: 120px;
 }
 
-a {
+.nav-links {
+  display: flex;
+  justify-content: space-around;
+  width: 30%;
+}
+
+.nav-links li {
+  list-style: none;
+}
+
+.nav-links a {
+  color: rgb(226, 226, 226);
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.login, .register {
   font-size: 20px;
   text-decoration: none;
   margin: 10px 20px;
@@ -30,6 +55,6 @@ a {
   border-radius: 10px;
 }
 
-a:hover {
+.login:hover, .register:hover {
   box-shadow: 0px 5px 0px #420315;
 }
