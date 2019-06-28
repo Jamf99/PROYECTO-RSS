@@ -67,10 +67,6 @@ input {
     cursor: pointer;
 }
 
-.button:active {
-    transform: scale(1.50);
-}
-
 .button:hover {
     background : #c41d34;
 }
