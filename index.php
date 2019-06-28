@@ -10,7 +10,7 @@
     $results = $records->fetch(PDO::FETCH_ASSOC);
 
     $user = null;
-    
+
     if (count($results) > 0) {
       $user = $results;
     }
@@ -30,8 +30,8 @@
     <?php else: ?>
       <div class="contenedora">
         <img src="assets/css/images/logo_principal.png" alt="" width="250px"><br>
-        <a class="login" href="login.php">Login</a>
-        <a class="register" href="signup.php">Register</a>
+        <a class="login" href="login.php">Iniciar Sesión</a>
+        <a class="register" href="signup.php">Registrarse</a>
       </div>
     <?php endif; ?>
   </body>

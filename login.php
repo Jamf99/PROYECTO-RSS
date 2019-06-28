@@ -8,7 +8,6 @@
   require 'database.php';
 
   if(!empty($_POST['email']) && !empty($_POST['password'])) {
-    $message = 'No ha ocurrido nada 1';
     $records = $conn->prepare('SELECT id, email, password FROM users WHERE email=:email');
     $records->bindParam(':email', $_POST['email']);
     $records->execute();
