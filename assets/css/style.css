@@ -26,6 +26,24 @@ nav {
   padding-top: 120px;
 }
 
+.principal {
+  display: flex;
+  justify-content: center;
+}
+
+.noticias, .suscripcion {
+  padding: 10px;
+  margin: 10px;
+  background: #ffffff;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 15px;
+  text-align : center;
+}
+
+.suscripcion {
+  line-height: 200px;
+}
+
 .nav-links {
   display: flex;
   justify-content: space-around;

@@ -3,7 +3,7 @@
 body {
     font-family: 'Mali', cursive;
     margin: 0;
-    background: url(images/fondo_opcional.jpg);
+    background: url(../images/fondo_opcional.jpg);
     /*background-size: cover;*/
     background-attachment: fixed;
 }

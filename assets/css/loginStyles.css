@@ -4,7 +4,7 @@ body {
     font-family: 'Mali', cursive;
     /*background-size: cover;*/
     background-attachment: fixed;
-    background: url(images/fondo_opcional.jpg);
+    background: url(../images/fondo_opcional.jpg);
 }
 
 * {
