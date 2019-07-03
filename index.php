@@ -27,10 +27,12 @@
       } else{
         $actualizado = $suscripcion_a_agregar;
       }
-      $stmt = $conn->prepare("UPDATE users SET suscriptions = '$actualizado' WHERE id = :id");
+      $nuevo = str_replace(" ", "", $actualizado);
+      $stmt = $conn->prepare("UPDATE users SET suscriptions = '$nuevo' WHERE id = :id");
       $stmt->bindParam(':id', $_SESSION['user_id']);
       if($stmt->execute()) {
         $mensaje = 'Suscripción agregada';
+        header('Location: /Proyecto_RSS');
       }else{
         $mensaje = 'No se pudo agregar la suscripción';
       }
