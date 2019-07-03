@@ -40,8 +40,22 @@ nav {
   text-align : center;
 }
 
+input[type=text] {
+  border: 1px dotted #999;
+  border-radius: 0;
+  width: 50%;
+  -webkit-appearance: none;
+}
+
 .suscripcion {
   line-height: 200px;
+}
+
+.noticias {
+  width: 60%;
+  height: 500px;
+  overflow: auto;
+
 }
 
 .nav-links {
