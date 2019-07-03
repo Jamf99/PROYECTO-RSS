@@ -4,7 +4,8 @@
   require 'database.php';
 
   if(isset($_SESSION['user_id'])) {
-    $records = $conn->prepare('SELECT id, name, email, password FROM users WHERE id = :id');
+
+    $records = $conn->prepare('SELECT id, name, email, password, suscriptions FROM users WHERE id = :id');
     $records->bindParam(':id', $_SESSION['user_id']);
     $records->execute();
     $results = $records->fetch(PDO::FETCH_ASSOC);
@@ -14,6 +15,28 @@
     if (count($results) > 0) {
       $user = $results;
     }
+
+    $mensaje = '';
+
+    $suscripciones = $user['suscriptions'];
+    if(!empty($_POST['suscripcion'])){
+      $suscripcion_a_agregar = $_POST['suscripcion'];
+      $actualizado = '';
+      if(!empty($suscripciones) && $suscripciones != '' && $suscripciones != NULL){
+        $actualizado = $suscripciones.','.$suscripcion_a_agregar;
+      } else{
+        $actualizado = $suscripcion_a_agregar;
+      }
+      $stmt = $conn->prepare("UPDATE users SET suscriptions = '$actualizado' WHERE id = :id");
+      $stmt->bindParam(':id', $_SESSION['user_id']);
+      if($stmt->execute()) {
+        $mensaje = 'Suscripción agregada';
+      }else{
+        $mensaje = 'No se pudo agregar la suscripción';
+      }
+
+    }
+
   }
 
 ?>
@@ -25,7 +48,6 @@
   </head>
   <body>
     <?php if(!empty($user)): ?>
-
       <nav>
         <div class="logo">
           <a href="index.php"><img src="assets/images/logo_principal.png" alt="" width="70px"></a><br>
@@ -37,46 +59,45 @@
       </nav>
 
       <div class="principal">
-        <div class="suscripcion">
-          <form class="" action="index.html" method="post">
-            <label for="">Escribe el link del sitio web en dónde te quieras suscribir</label><br>
-            <input type="text" name="" value=""><br>
-            <input type="submit" name="" value="Suscribirse">
+        <div class="suscripcion" style="height:50%; width : 500px;">
+          <form class="" action="index.php" method="post">
+            <label for="">Escribe el link del sitio web en dónde te quieras suscribir</label>
+            <input type="text" name="suscripcion" class="txtSuscripcion"><br>
+            <input type="submit" name="" value="Suscribirse" class="suscribirse">
           </form>
+          <?php if(!empty($mensaje)): ?>
+            <p><b><?= $mensaje ?></b></p>
+          <?php endif; ?>
         </div>
 
         <div class="noticias">
           <?php
-
-            $xml ='http://www.eltiempo.com/contenido/opinion/rss.xml';
-            $num_noticias = 5;
-            $long_description = 100;
-            $noticias = simplexml_load_file($xml);
-
-            foreach($noticias as $noticia) {
-              $n = 0;
-              foreach($noticia as $reg){
-                if($reg->title != NULL && $reg->title != '' && $reg->description != NULL && $reg->description != '' && $n < $num_noticias) {
-                  ?> <div class="noticia"> <?php
-                    echo '<h4><a href="'.$reg->link.'" target="_blank">'.$reg->title.'</a></h4>';
-                    if(strlen($reg->description) > $long_description){
-                      echo '<p>'.substr($reg->description, 0, $long_description).'....</a></p>';
-                    }else if($reg->description == NULL || $reg->description == '') {
-
-                    }else {
-
-                    }
-                    $n++;
-                  ?></div> <?php
+            echo "<h2>Mis Noticias</h2>";
+            if(!empty($suscripciones)) {
+              $arreglo = explode(",", $suscripciones);
+              foreach($arreglo as $pagina_suscripcion){
+                $articulos = simplexml_load_string(file_get_contents($pagina_suscripcion));
+                $num_noticia=1;
+                $max_noticias=10;
+                foreach($articulos->channel->item as $noticia){
+                  $fecha = date("d/m/Y - ", strtotime($noticia->pubDate));?>
+                  <article>
+                      <h5><a href="<?php echo $noticia->link; ?>"><?php echo $noticia->title; ?></a></h5>
+                      <?php echo $fecha; ?>
+                      <?php echo $noticia->description; ?>
+                  </article>
+                  <?php $num_noticia++;
+                  if($num_noticia > $max_noticias){
+                      break;
+                  }
                 }
               }
+            } else {
+              echo "<br><br><br><br><br><br><br><p>No tienes noticias aún</p>";
             }
-            ?>
+          ?>
         </div>
       </div>
-
-
-
     <?php else: ?>
       <div class="contenedora">
         <img src="assets/images/logo_principal.png" alt="" width="250px"><br>
