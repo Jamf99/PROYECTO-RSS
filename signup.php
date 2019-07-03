@@ -3,28 +3,39 @@
   if (isset($_SESSION['user_id'])) {
     header('Location: /Proyecto_RSS');
   }
-  
+
   require 'database.php';
 
   $message = '';
 
   if(!empty($_POST['email']) && !empty($_POST['password']) && !empty($_POST['confirm_password']) && !empty($_POST['name'])) {
-    if($_POST['password'] == $_POST['confirm_password']){
-      $sql = "INSERT INTO users (name, email, password) VALUES (:name, :email, :password)";
-      $stmt = $conn->prepare($sql);
-      $stmt->bindParam(':name', $_POST['name']);
-      $stmt->bindParam(':email', $_POST['email']);
-      $password = password_hash($_POST['password'], PASSWORD_BCRYPT);
-      $stmt->bindParam(':password', $password);
 
-      if($stmt->execute()) {
-        $message = 'Usuario creado correctamente';
+    $consulta = $conn->prepare("SELECT email FROM users WHERE email = :email");
+    $consulta->bindParam(':email', $_POST['email']);
+    $consulta->execute();
+    $results = $consulta->fetch(PDO::FETCH_ASSOC);
+
+    if(count($results) == 0) {
+      if($_POST['password'] == $_POST['confirm_password']){
+        $sql = "INSERT INTO users (name, email, password) VALUES (:name, :email, :password)";
+        $stmt = $conn->prepare($sql);
+        $stmt->bindParam(':name', $_POST['name']);
+        $stmt->bindParam(':email', $_POST['email']);
+        $password = password_hash($_POST['password'], PASSWORD_BCRYPT);
+        $stmt->bindParam(':password', $password);
+
+        if($stmt->execute()) {
+          $message = 'Usuario creado correctamente';
+        }else {
+          $message = 'Ha ocurrido un error al crear su cuenta';
+        }
       }else {
-        $message = 'Ha ocurrido un error al crear su cuenta';
+        $message = 'Las contraseñas no coinciden';
       }
-    }else {
-      $message = 'Las contraseñas no coinciden';
+    } else {
+      $message = 'Ya existe un usuario con este correo electrónico';
     }
+
   }
 
 ?>
