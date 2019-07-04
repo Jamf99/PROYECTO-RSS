@@ -38,6 +38,22 @@
       }
 
     }
+    if(!empty($_GET['suscription'])) {
+      $suscripcion_a_eliminar = $_GET['suscription'];
+      $encontrada = strpos($suscripciones, $suscripcion_a_eliminar.',');
+      if($encontrada === true) {
+          $nuevo = str_replace($suscripcion_a_eliminar.',',"", $suscripciones);
+      }else {
+          $nuevo = str_replace(','.$suscripcion_a_eliminar,"", $suscripciones);
+      }
+      $consulta = $conn->prepare("UPDATE users SET suscriptions = '$nuevo' WHERE id = :id");
+      $consulta->bindParam(':id', $_SESSION['user_id']);
+      if($consulta->execute()) {
+        header('Location: /Proyecto_RSS');
+      } else {
+
+      }
+    }
 
   }
 
@@ -47,7 +63,17 @@
     <meta charset="utf-8">
     <title>RSS Project</title>
     <link rel="stylesheet" href="assets/css/style.css">
+    <script>
+      function eliminarSuscripcion() {
+        if(confirm("¿Seguro que quieres eliminar esta suscripción?")) {
+          return true;
+        }else{
+          return false;
+        }
+      }
+    </script>
   </head>
+
   <body>
     <?php if(!empty($user)): ?>
       <nav>
@@ -59,22 +85,37 @@
           <li><a href="logout.php">Cerrar sesión</a></li>
         </ul>
       </nav>
-
       <div class="principal">
-        <div class="suscripcion" style="height:50%; width : 500px;">
-          <form class="" action="index.php" method="post">
-            <label for="">Escribe el link del sitio web en dónde te quieras suscribir</label>
-            <input type="text" name="suscripcion" class="txtSuscripcion"><br>
-            <input type="submit" name="" value="Suscribirse" class="suscribirse">
+        <div class="izquierda">
+          <form class="contenedor" style="height:130px; width : 500px;" action="index.php" method="post">
+            <input type="text" placeholder="Escribe el formato RSS del sitio web donde desees suscribirte" name="suscripcion" class="txtSuscripcion"><br>
+            <input style="margin-top: 15px;"type="submit" name="" value="Suscribirse" class="button">
           </form>
-          <?php if(!empty($mensaje)): ?>
-            <p><b><?= $mensaje ?></b></p>
-          <?php endif; ?>
+          <div class="panel_auxiliar">
+            <div class="suscripciones">
+              <h3>Mis suscripciones</h3>
+              <?php
+              if(!empty($suscripciones)) {
+                $arreglo = explode(",", $suscripciones);
+                foreach($arreglo as $suscripcion) { ?>
+                  <ul>
+                    <form class="" action="index.html" method="post">
+                      <li><?php echo $suscripcion.' ' ?> <a onclick="return eliminarSuscripcion();" href="index.php?suscription=<?php echo $suscripcion;?>">Eliminar</a></li>
+                    </form>
+                  </ul>
+                  <?php
+                }
+              }
+              ?>
+            </div>
+            <div class="opciones">
+              <h3>Opciones</h3>
+            </div>
+          </div>
         </div>
-
-        <div class="noticias">
+        <div class="noticias" style="padding-top:0px;">
           <?php
-            echo "<h2>Mis Noticias</h2>";
+            echo "<h1>Mis Noticias</h1>";
             if(!empty($suscripciones)) {
               $arreglo = explode(",", $suscripciones);
               foreach($arreglo as $pagina_suscripcion){

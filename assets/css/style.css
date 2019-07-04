@@ -21,41 +21,54 @@ nav {
   background-color: #5d4954;
 }
 
-.contenedora {
-  text-align: center;
-  padding-top: 120px;
-}
-
 .principal {
   display: flex;
   justify-content: center;
 }
 
-.noticias, .suscripcion {
+.contenedora {
+  text-align: center;
+  padding-top: 120px;
+}
+
+.noticias, .contenedor, .panel_auxiliar{
   padding: 10px;
   margin: 10px;
   background: #ffffff;
   background: rgba(255, 255, 255, 0.8);
   border-radius: 15px;
   text-align : center;
+
 }
 
 input[type=text] {
-  border: 1px dotted #999;
-  border-radius: 0;
-  width: 50%;
-  -webkit-appearance: none;
+  font-size: 15px;
+  width: 95%;
+  padding: 10px;
+  border: none;
 }
 
-.suscripcion {
+.button {
+  border: none;
+  width: 95%;
+  color: white;
+  font-size: 20px;
+  background: #cc1b4d;
+  padding : 10px 15px;
+  border-radius : 5px;
+  cursor : pointer;
+}
+
+.contenedor {
   line-height: 200px;
+  max-height: 200px;
 }
 
 .noticias {
   width: 60%;
-  height: 500px;
+  height: 540px;
   overflow: auto;
-
+  padding-top: 0px;
 }
 
 .nav-links {
@@ -64,7 +77,11 @@ input[type=text] {
   width: 30%;
 }
 
-.nav-links li {
+h1 {
+  color: #cc1b4d;
+}
+
+li {
   list-style: none;
 }
 
@@ -89,4 +106,29 @@ input[type=text] {
 
 .login:hover, .register:hover {
   box-shadow: 0px 5px 0px #420315;
+}
+
+.panel_auxiliar {
+  height: 400px;
+  padding-top: 3px;
+}
+
+.suscripciones {
+  padding-left: 0px;
+  height: 189px;
+  max-height: 400px;
+  overflow: auto;
+}
+
+.suscripciones h3 {
+  text-align: center;
+}
+
+.suscripciones ul {
+  padding-left: 10px;
+  text-align: left;
+}
+
+.opciones {
+
 }
