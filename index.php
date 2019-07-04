@@ -38,13 +38,14 @@
       }
 
     }
+    $flag = '';
     if(!empty($_GET['suscription'])) {
       $suscripcion_a_eliminar = $_GET['suscription'];
-      $encontrada = strpos($suscripciones, $suscripcion_a_eliminar.',');
-      if($encontrada === true) {
-          $nuevo = str_replace($suscripcion_a_eliminar.',',"", $suscripciones);
-      }else {
-          $nuevo = str_replace(','.$suscripcion_a_eliminar,"", $suscripciones);
+      $arreglo = explode(",", $suscripciones);
+      if($arreglo[0] == $suscripcion_a_eliminar){
+        $nuevo = str_replace($suscripcion_a_eliminar.',',"", $suscripciones);
+      }else{
+        $nuevo = str_replace(','.$suscripcion_a_eliminar,"", $suscripciones);
       }
       $consulta = $conn->prepare("UPDATE users SET suscriptions = '$nuevo' WHERE id = :id");
       $consulta->bindParam(':id', $_SESSION['user_id']);
@@ -103,6 +104,7 @@
                       <li><?php echo $suscripcion.' ' ?> <a onclick="return eliminarSuscripcion();" href="index.php?suscription=<?php echo $suscripcion;?>">Eliminar</a></li>
                     </form>
                   </ul>
+                  <p><?=$flag?></p>
                   <?php
                 }
               }
