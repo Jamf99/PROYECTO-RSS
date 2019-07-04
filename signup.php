@@ -15,7 +15,8 @@
     $consulta->execute();
     $results = $consulta->fetch(PDO::FETCH_ASSOC);
 
-    if(count($results) == 0) {
+
+    if($results == '') {
       if($_POST['password'] == $_POST['confirm_password']){
         $sql = "INSERT INTO users (name, email, password) VALUES (:name, :email, :password)";
         $stmt = $conn->prepare($sql);
@@ -33,7 +34,7 @@
         $message = 'Las contraseñas no coinciden';
       }
     } else {
-      $message = 'Ya existe un usuario con este correo electrónico';
+      $message = 'Ya existe un usuario con este correo electrónico '.$results;
     }
 
   }
