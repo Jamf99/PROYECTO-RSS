@@ -6,18 +6,24 @@
   }
 
   require 'database.php';
+  require_once 'app/init.php';
 
   if(!empty($_POST['email']) && !empty($_POST['password'])) {
-    $records = $conn->prepare('SELECT id, email, password FROM users WHERE email=:email');
-    $records->bindParam(':email', $_POST['email']);
-    $records->execute();
-    $results = $records->fetch(PDO::FETCH_ASSOC);
+    $response = $recaptcha->verify($_POST['g-recaptcha-response']);
+    if($response->isSuccess()){
+      $records = $conn->prepare('SELECT id, email, password FROM users WHERE email=:email');
+      $records->bindParam(':email', $_POST['email']);
+      $records->execute();
+      $results = $records->fetch(PDO::FETCH_ASSOC);
 
-    if(count($results) > 0 && password_verify($_POST['password'], $results['password'])) {
-      $_SESSION['user_id'] = $results['id'];
-      header('Location: /Proyecto_RSS');
+      if(count($results) > 0 && password_verify($_POST['password'], $results['password'])) {
+        $_SESSION['user_id'] = $results['id'];
+        header('Location: /Proyecto_RSS');
+      }else {
+        $message = "Lo siento, sus credenciales no coinciden";
+      }
     }else {
-      $message = "Lo siento, sus credenciales no coinciden";
+      $message = 'Por favor, rellene el captcha';
     }
   }
 
@@ -46,9 +52,11 @@
                 <i class="fas fa-key icon"></i>
                 <input placeholder="Contraseña" type="password" name="password" required />
             </div>
+            <div class="g-recaptcha" data-sitekey="6Led_qsUAAAAALQPLJxY9hUMR09lPnN5TjV-Hq0p"></div>
             <input type="submit" value="Iniciar sesión" class="button" />
             <p>¿No tienes cuenta?<a class="link" href="signup.php"> Registrate aquí</a></p>
         </div>
     </form>
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
   </body>
 </html>

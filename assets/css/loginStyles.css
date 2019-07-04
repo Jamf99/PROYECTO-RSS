@@ -11,6 +11,11 @@ body {
     box-sizing : border-box;
 }
 
+.g-recaptcha {
+  margin-bottom: 15px;
+  width: 50%;
+}
+
 .contenedor {
     width : 100%;
     padding : 15px;
