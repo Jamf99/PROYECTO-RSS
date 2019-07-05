@@ -56,6 +56,7 @@
       }
     }
 
+    //Para el fondo de pantalla
     $mensajito = '';
     if(!empty($_FILES['imagen']['name'])) {
       $imagen = $_FILES['imagen']['name'];
@@ -63,6 +64,7 @@
       $mensajito = $imagen;
     }
 
+    //Para filtrar
     $filtro = '';
     if(!empty($_POST['filtro'])) {
       $filtro = $_POST['filtro'];
@@ -142,7 +144,7 @@
                 <h5>FILTRAR POR SUSCRIPCIÓN</h5>
                 <form class="" action="index.php" method="post">
                   <select style="margin-top:20px;" class="" name="filtro">
-                    <option value="">TODO</option>
+                    <option value="">Mostrar todo</option>
                     <?php
                       $arreglo = explode(",", $suscripciones);
                       foreach($arreglo as $filtrado) {
