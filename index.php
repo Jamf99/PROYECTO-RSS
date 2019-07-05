@@ -42,18 +42,30 @@
     if(!empty($_GET['suscription'])) {
       $suscripcion_a_eliminar = $_GET['suscription'];
       $arreglo = explode(",", $suscripciones);
-      if($arreglo[0] == $suscripcion_a_eliminar){
+      if(count($arreglo) == 1){
+        $nuevo = str_replace($suscripcion_a_eliminar,"", $suscripciones);
+      }else if($arreglo[0] == $suscripcion_a_eliminar){
         $nuevo = str_replace($suscripcion_a_eliminar.',',"", $suscripciones);
-      }else{
+      } else {
         $nuevo = str_replace(','.$suscripcion_a_eliminar,"", $suscripciones);
       }
       $consulta = $conn->prepare("UPDATE users SET suscriptions = '$nuevo' WHERE id = :id");
       $consulta->bindParam(':id', $_SESSION['user_id']);
       if($consulta->execute()) {
         header('Location: /Proyecto_RSS');
-      } else {
-
       }
+    }
+
+    $mensajito = '';
+    if(!empty($_FILES['imagen']['name'])) {
+      $imagen = $_FILES['imagen']['name'];
+      $ruta = $_FILES['imagen']['tmp_name'];
+      $mensajito = $imagen;
+    }
+
+    $filtro = '';
+    if(!empty($_POST['filtro'])) {
+      $filtro = $_POST['filtro'];
     }
 
   }
@@ -72,6 +84,21 @@
           return false;
         }
       }
+      function validarExtension() {
+        var archivoInput = document.getElementById('archivoInput');
+        var archivoRuta = archivoInput.value;
+
+        var extensionesPermitidas = /(.jpg|.png)$/i;
+
+        if(!extensionesPermitidas.exec(archivoRuta)) {
+          alert('Asegúrate de haber escogido una imagen');
+          archivoInput.value = '';
+          return false;
+        } else {
+          return true;
+        }
+      }
+
     </script>
   </head>
 
@@ -111,14 +138,37 @@
               ?>
             </div>
             <div class="opciones">
-              <h3>Opciones</h3>
+              <div class="filtrar">
+                <h5>FILTRAR POR SUSCRIPCIÓN</h5>
+                <form class="" action="index.php" method="post">
+                  <select style="margin-top:20px;" class="" name="filtro">
+                    <option value="">TODO</option>
+                    <?php
+                      $arreglo = explode(",", $suscripciones);
+                      foreach($arreglo as $filtrado) {
+                        ?><option value="<?= $filtrado ?>"><?php echo $filtrado ?></option><?php
+                      }?>
+                    ?>
+                  </select><br>
+                  <input style="margin-top : 30px;" class="boton_filtrar" type="submit" value="Filtrar">
+                </form>
+              </div>
+              <div class="preferencias" style="padding-top : 0px;">
+                <h5>PERSONALIZAR </h5><h6>FONDO PANTALLA</h6>
+                <form class="" action="index.php" method="post" enctype="multipart/form-data">
+                  <input type="file" name="imagen" id="archivoInput" onchange="return validarExtension();">
+                  <input type="submit" name="" class="boton_personalizar" value="Cambiar">
+                  <?=$mensajito?>
+                </form>
+              </div>
             </div>
           </div>
         </div>
         <div class="noticias" style="padding-top:0px;">
           <?php
-            echo "<h1>Mis Noticias</h1>";
-            if(!empty($suscripciones)) {
+
+            if(!empty($suscripciones) && $filtro == '') {
+              echo "<h1>MIS NOTICIAS</h1>";
               $arreglo = explode(",", $suscripciones);
               foreach($arreglo as $pagina_suscripcion){
                 $articulos = simplexml_load_string(file_get_contents($pagina_suscripcion));
@@ -137,7 +187,26 @@
                   }
                 }
               }
+              echo $filtro;
+            } else if($filtro != '') {
+              echo "<h1>MIS NOTICIAS de $filtro</h1>";
+              $articulos = simplexml_load_string(file_get_contents($filtro));
+              $num_noticia=1;
+              $max_noticias=10;
+              foreach($articulos->channel->item as $noticia){
+                $fecha = date("d/m/Y - ", strtotime($noticia->pubDate));?>
+                <article>
+                    <h5><a href="<?php echo $noticia->link; ?>"><?php echo $noticia->title; ?></a></h5>
+                    <?php echo $fecha; ?>
+                    <?php echo $noticia->description; ?>
+                </article>
+                <?php $num_noticia++;
+                if($num_noticia > $max_noticias){
+                    break;
+                }
+              }
             } else {
+              echo "<h1>MIS NOTICIAS</h1>";
               echo "<br><br><br><br><br><br><br><p>No tienes noticias aún</p>";
             }
           ?>

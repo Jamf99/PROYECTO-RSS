@@ -77,7 +77,7 @@ input[type=text] {
   width: 30%;
 }
 
-h1 {
+h1, h5, h6 {
   color: #cc1b4d;
 }
 
@@ -115,7 +115,7 @@ li {
 
 .suscripciones {
   padding-left: 0px;
-  height: 189px;
+  height: 235px;
   max-height: 400px;
   overflow: auto;
 }
@@ -129,6 +129,45 @@ li {
   text-align: left;
 }
 
-.opciones {
+.filtrar {
+  float: left;
+  width:48%;
+  height:120px;
+}
 
+.preferencias {
+  float: right;
+  width:48%;
+  height:120px;
+}
+
+input[type=file] {
+  width: 180px;
+  margin-bottom: 19px;
+  margin-top: 0px;
+}
+
+h5 {
+  margin-top : 6px;
+  margin-bottom: 2px;
+}
+
+h6 {
+  margin-top: 0px;
+  margin-bottom: 15px;
+}
+
+select {
+  max-width: 200px;
+}
+
+.boton_filtrar, .boton_personalizar {
+  border: none;
+  width: 95%;
+  color: white;
+  font-size: 20px;
+  background: #cc1b4d;
+  padding : 10px 15px;
+  border-radius : 5px;
+  cursor : pointer;
 }
