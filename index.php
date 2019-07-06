@@ -5,7 +5,7 @@
 
   if(isset($_SESSION['user_id'])) {
 
-    $records = $conn->prepare('SELECT id, name, email, password, suscriptions FROM users WHERE id = :id');
+    $records = $conn->prepare('SELECT id, name, email, password, suscriptions, wallpapers FROM users WHERE id = :id');
     $records->bindParam(':id', $_SESSION['user_id']);
     $records->execute();
     $results = $records->fetch(PDO::FETCH_ASSOC);
@@ -58,10 +58,22 @@
 
     //Para el fondo de pantalla
     $mensajito = '';
+    $destino = '';
+    if(!empty($user['wallpapers'])) {
+      $destino = $user['wallpapers'];
+    }
     if(!empty($_FILES['imagen']['name'])) {
-      $imagen = $_FILES['imagen']['name'];
-      $ruta = $_FILES['imagen']['tmp_name'];
-      $mensajito = $imagen;
+      $file = $_FILES['imagen']['name'];
+      $ruta = $_FILES["imagen"]["tmp_name"];
+      $destino = "assets/images/wallpaper/".$file;
+      copy($ruta, $destino);
+      $query = $conn->prepare("UPDATE users SET wallpapers = '$destino' WHERE id = :id");
+      $query->bindParam(':id', $_SESSION['user_id']);
+      if($query->execute()){
+        $mensajito = '';
+      } else {
+        $mensajito = 'No se pudo agregar la imagen';
+      }
     }
 
     //Para filtrar
@@ -90,7 +102,7 @@
         var archivoInput = document.getElementById('archivoInput');
         var archivoRuta = archivoInput.value;
 
-        var extensionesPermitidas = /(.jpg|.png)$/i;
+        var extensionesPermitidas = /(.jpg|.png|.gif)$/i;
 
         if(!extensionesPermitidas.exec(archivoRuta)) {
           alert('Asegúrate de haber escogido una imagen');
@@ -102,6 +114,19 @@
       }
 
     </script>
+    <style media="screen">
+      body {
+        <?php
+          if($destino != '') : ?>
+            background-image: url("<?= $destino ?>");
+            margin: 0;
+            padding: 0;
+            font-family: 'Mali', cursive;
+            background-size: cover;
+            background-attachment: fixed;
+         <?php endif; ?>
+      }
+    </style>
   </head>
 
   <body>
