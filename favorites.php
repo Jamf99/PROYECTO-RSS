@@ -16,9 +16,30 @@
     if ($results != null && count($results) > 0) {
       $user = $results;
     }
-
-    $favs = $user['favoritos'];
-
+    $messagge = '';
+    
+    //Función que permite eliminar una noticia favorita de la base de datos
+    if(!empty($user['favoritos'])) {
+      $favs = $user['favoritos'];
+      if(!empty($_GET['borrarFav'])) {
+        $favorito_a_eliminar = $_GET['borrarFav'];
+        $arreglo_favs = explode(",", $favs);
+        if(count($arreglo_favs) == 1){
+          $new = str_replace($favorito_a_eliminar,"", $favs);
+        }else if($arreglo_favs[0] == $favorito_a_eliminar){
+          $new = str_replace($favorito_a_eliminar.',',"", $favs);
+        } else {
+          $new = str_replace(','.$favorito_a_eliminar,"", $favs);
+        }
+        $consulta = $conn->prepare("UPDATE users SET favoritos = '$new' WHERE id = :id");
+        $consulta->bindParam(':id', $_SESSION['user_id']);
+        if($consulta->execute()) {
+          header('Location: /Proyecto_RSS/favorites.php');
+        }
+      }
+    }else{
+      $messagge = 'No hay noticias favoritas en este momento';
+    }
   }
 
 ?>
@@ -49,10 +70,12 @@
           $arreglo_favoritos = explode(",", $favs);
           foreach($arreglo_favoritos as $favorito_a_mostrar) { ?>
             <form class="links-favoritos" action="index.html" method="post">
-              <a href="<?php echo $favorito_a_mostrar; ?>"><?php echo $favorito_a_mostrar; ?></a>  <a style="color:red;"href="#">✖</a>
+              <a href="<?php echo $favorito_a_mostrar; ?>"><?php echo $favorito_a_mostrar; ?></a>  <a style="color:red;" href="favorites.php?borrarFav=<?php echo $favorito_a_mostrar;?>">✖</a>
             </form>
           <?php
           }
+        }else {
+          echo $messagge;
         }
         ?>
       </div>

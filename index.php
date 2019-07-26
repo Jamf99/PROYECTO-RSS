@@ -179,97 +179,78 @@
           <li><a href="logout.php">Cerrar sesión</a></li>
         </ul>
       </nav>
-      <?php if(false == false) : ?>
-        <div class="principal">
-          <div class="izquierda">
-            <form class="contenedor" style="height:130px; width : 500px;" action="index.php" method="post">
-              <input type="text" placeholder="Escribe el formato RSS del sitio web donde desees suscribirte" name="suscripcion" class="txtSuscripcion"><br>
-              <input style="margin-top: 15px;"type="submit" name="" value="Suscribirse" class="button">
-            </form>
-            <div class="panel_auxiliar">
-              <div class="suscripciones">
-                <h3>Mis suscripciones</h3>
-                <?php
-                if(!empty($suscripciones)) {
-                  $arreglo = explode(",", $suscripciones);
-                  foreach($arreglo as $suscripcion) { ?>
-                    <ul>
-                      <form class="" action="index.html" method="post">
-                        <li><?php echo $suscripcion.' ' ?> <a onclick="return eliminarSuscripcion();" href="index.php?suscription=<?php echo $suscripcion;?>">Eliminar</a></li>
-                      </form>
-                    </ul>
-                    <p><?=$flag?></p>
-                    <?php
-                  }
+      <div class="principal">
+        <div class="izquierda">
+          <form class="contenedor" style="height:130px; width : 500px;" action="index.php" method="post">
+            <input type="text" placeholder="Escribe el formato RSS del sitio web donde desees suscribirte" name="suscripcion" class="txtSuscripcion"><br>
+            <input style="margin-top: 15px;"type="submit" name="" value="Suscribirse" class="button">
+          </form>
+          <div class="panel_auxiliar">
+            <div class="suscripciones">
+              <h3>Mis suscripciones</h3>
+              <?php
+              if(!empty($suscripciones)) {
+                $arreglo = explode(",", $suscripciones);
+                foreach($arreglo as $suscripcion) { ?>
+                  <ul>
+                    <form class="" action="index.html" method="post">
+                      <li><?php echo $suscripcion.' ' ?> <a onclick="return eliminarSuscripcion();" href="index.php?suscription=<?php echo $suscripcion;?>">Eliminar</a></li>
+                    </form>
+                  </ul>
+                  <p><?=$flag?></p>
+                  <?php
                 }
-                ?>
-              </div>
-              <div class="opciones">
+              }
+              ?>
+            </div>
+            <div class="opciones">
+              <form class="" action="index.php" method="post">
+                <label for="">Número de noticias que desee ver por suscripción</label><br>
+                <input type="number" min="1" name="total_noticias" value="<?= $max_noticias?>">
+                <input type="submit" name="" value="Confirmar">
+              </form>
+              <div class="filtrar">
+                <h5>FILTRAR POR SUSCRIPCIÓN</h5>
                 <form class="" action="index.php" method="post">
-                  <label for="">Número de noticias que desee ver por suscripción</label><br>
-                  <input type="number" min="1" name="total_noticias" value="<?= $max_noticias?>">
-                  <input type="submit" name="" value="Confirmar">
+                  <select style="margin-top:20px;" class="" name="filtro">
+                    <option value="">Mostrar todo</option>
+                    <?php
+                      $arreglo = explode(",", $suscripciones);
+                      foreach($arreglo as $filtrado) {
+                        ?><option value="<?= $filtrado ?>"><?php echo $filtrado ?></option><?php
+                      }?>
+                    ?>
+                  </select><br>
+                  <input style="margin-top : 30px;" class="boton_filtrar" type="submit" value="Filtrar">
                 </form>
-                <div class="filtrar">
-                  <h5>FILTRAR POR SUSCRIPCIÓN</h5>
-                  <form class="" action="index.php" method="post">
-                    <select style="margin-top:20px;" class="" name="filtro">
-                      <option value="">Mostrar todo</option>
-                      <?php
-                        $arreglo = explode(",", $suscripciones);
-                        foreach($arreglo as $filtrado) {
-                          ?><option value="<?= $filtrado ?>"><?php echo $filtrado ?></option><?php
-                        }?>
-                      ?>
-                    </select><br>
-                    <input style="margin-top : 30px;" class="boton_filtrar" type="submit" value="Filtrar">
-                  </form>
-                </div>
-                <div class="preferencias" style="padding-top : 0px;">
-                  <h5>PERSONALIZAR </h5><h6>FONDO PANTALLA</h6>
-                  <form class="" action="index.php" method="post" enctype="multipart/form-data">
-                    <input type="file" name="imagen" id="archivoInput" onchange="return validarExtension();">
-                    <input type="submit" name="" class="boton_personalizar" value="Cambiar">
-                    <?=$mensajito?>
-                  </form>
-                </div>
+              </div>
+              <div class="preferencias" style="padding-top : 0px;">
+                <h5>PERSONALIZAR </h5><h6>FONDO PANTALLA</h6>
+                <form class="" action="index.php" method="post" enctype="multipart/form-data">
+                  <input type="file" name="imagen" id="archivoInput" onchange="return validarExtension();">
+                  <input type="submit" name="" class="boton_personalizar" value="Cambiar">
+                  <?=$mensajito?>
+                </form>
               </div>
             </div>
           </div>
-          <div class="noticias" style="padding-top:0px;">
-            <?php
+        </div>
+        <div class="noticias" style="padding-top:0px;">
+          <?php
 
-              if(!empty($suscripciones) && $filtro == '') {
-                $arreglo = explode(",", $suscripciones);
-                $total = count($arreglo)*$max_noticias;
-                echo "<h1>MIS NOTICIAS ($total)</h1>";
-                foreach($arreglo as $pagina_suscripcion){
-                  $articulos = simplexml_load_string(file_get_contents($pagina_suscripcion));
-                  $num_noticia=1;
-                  foreach($articulos->channel->item as $noticia){
-                    $fecha = date("d/m/Y - ", strtotime($noticia->pubDate));?>
-                    <article>
-                      <form class="" action="index.html" method="post">
-                        <h5><a href="<?php echo $noticia->link; ?>"><?php echo $noticia->title; ?></a>  <a style="color:red;"href="index.php?favorito=<?php echo $noticia->link; ?>">★</a></h5>
-                      </form>
-                        <?php echo $fecha; ?>
-                        <?php echo $noticia->description; ?>
-                    </article>
-                    <?php $num_noticia++;
-                    if($num_noticia > $max_noticias){
-                        break;
-                    }
-                  }
-                  echo $max_noticias;
-                }
-              } else if($filtro != '') {
-                echo "<h1>MIS NOTICIAS de $filtro ($max_noticias)</h1>";
-                $articulos = simplexml_load_string(file_get_contents($filtro));
+            if(!empty($suscripciones) && $filtro == '') {
+              $arreglo = explode(",", $suscripciones);
+              $total = count($arreglo)*$max_noticias;
+              echo "<h1>MIS NOTICIAS ($total)</h1>";
+              foreach($arreglo as $pagina_suscripcion){
+                $articulos = simplexml_load_string(file_get_contents($pagina_suscripcion));
                 $num_noticia=1;
                 foreach($articulos->channel->item as $noticia){
                   $fecha = date("d/m/Y - ", strtotime($noticia->pubDate));?>
                   <article>
-                      <h5><a href="<?php echo $noticia->link; ?>"><?php echo $noticia->title; ?></a></h5>
+                    <form class="" action="index.html" method="post">
+                      <h5><a href="<?php echo $noticia->link; ?>"><?php echo $noticia->title; ?></a>  <a style="color:red;"href="index.php?favorito=<?php echo $noticia->link; ?>">★</a></h5>
+                    </form>
                       <?php echo $fecha; ?>
                       <?php echo $noticia->description; ?>
                   </article>
@@ -278,18 +259,31 @@
                       break;
                   }
                 }
-              } else {
-                echo "<h1>MIS NOTICIAS</h1>";
-                echo "<br><br><br><br><br><br><br><p>No tienes noticias aún</p>";
+                echo $max_noticias;
               }
-            ?>
-          </div>
+            } else if($filtro != '') {
+              echo "<h1>MIS NOTICIAS de $filtro ($max_noticias)</h1>";
+              $articulos = simplexml_load_string(file_get_contents($filtro));
+              $num_noticia=1;
+              foreach($articulos->channel->item as $noticia){
+                $fecha = date("d/m/Y - ", strtotime($noticia->pubDate));?>
+                <article>
+                    <h5><a href="<?php echo $noticia->link; ?>"><?php echo $noticia->title; ?></a></h5>
+                    <?php echo $fecha; ?>
+                    <?php echo $noticia->description; ?>
+                </article>
+                <?php $num_noticia++;
+                if($num_noticia > $max_noticias){
+                    break;
+                }
+              }
+            } else {
+              echo "<h1>MIS NOTICIAS</h1>";
+              echo "<br><br><br><br><br><br><br><p>No tienes noticias aún</p>";
+            }
+          ?>
         </div>
-      <?php else : ?>
-        <div class="favoritos">
-
-        </div>
-      <?php endif; ?>
+      </div>
     <?php else : ?>
       <div class="contenedora">
         <img src="assets/images/logo_principal.png" alt="" width="250px"><br>
