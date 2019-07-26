@@ -42,6 +42,23 @@ nav {
 
 }
 
+.favoritos {
+  padding: 30px;
+  margin: auto;
+  margin-top: 40px;
+  background: #ffffff;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 15px;
+  text-align : center;
+  height: 500px;
+  width: 50%;
+}
+
+.favoritos-container {
+  overflow: auto;
+  max-height: 390px;
+}
+
 input[type=text] {
   font-size: 15px;
   width: 95%;
@@ -82,6 +99,10 @@ h1, h5, h6 {
   color: #cc1b4d;
 }
 
+.links-favoritos {
+  margin-bottom: 20px;
+}
+
 li {
   list-style: none;
 }
@@ -114,7 +135,7 @@ li {
   padding-top: 3px;
 }
 
-.suscripciones {
+.suscripciones{
   padding-left: 0px;
   height: 170px;
   max-height: 170px;

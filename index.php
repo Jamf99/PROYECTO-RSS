@@ -6,19 +6,18 @@
   if(isset($_SESSION['user_id'])) {
 
     //Se encarga de extrer la información del usuario desde la base de datos
-    $records = $conn->prepare('SELECT id, name, email, password, suscriptions, wallpapers FROM users WHERE id = :id');
+    $records = $conn->prepare('SELECT id, name, email, password, suscriptions, wallpapers, favoritos FROM users WHERE id = :id');
     $records->bindParam(':id', $_SESSION['user_id']);
     $records->execute();
     $results = $records->fetch(PDO::FETCH_ASSOC);
 
     $user = null;
 
-    if (count($results) > 0) {
+    if ($results != null && count($results) > 0) {
       $user = $results;
     }
 
     $mensaje = '';
-    $favoritos = false;
 
     //Función que permite agregar una suscripción a la base de datos
     $suscripciones = $user['suscriptions'];
@@ -40,6 +39,36 @@
         $mensaje = 'No se pudo agregar la suscripción';
       }
 
+    }
+
+    //Función que permite agregar una noticia a los favoritos
+    $favoritos = $user['favoritos'];
+    if(!empty($_GET['favorito'])) {
+      $favorito_a_agregar = $_GET['favorito'];
+      $array = explode(",", $favoritos);
+      $repetido = false;
+      foreach($array as $fav) {
+        if($fav == $favorito_a_agregar) {
+          $repetido = true;
+        }
+      }
+      if(!$repetido){
+        $fav_actualizado = '';
+        if(!empty($favoritos) && $favoritos != '' && $favoritos != NULL){
+          $fav_actualizado = $favoritos.','.$favorito_a_agregar;
+        } else{
+          $fav_actualizado = $favorito_a_agregar;
+        }
+        $stmt = $conn->prepare("UPDATE users SET favoritos = '$fav_actualizado' WHERE id = :id");
+        $stmt->bindParam(':id', $_SESSION['user_id']);
+        if($stmt->execute()) {
+          header('Location: /Proyecto_RSS');
+        }else{
+          $mensaje = 'No se pudo agregar el favorito';
+        }
+      }else {
+        header('Location: /Proyecto_RSS');
+      }
     }
 
     //Función que permite eliminar una suscripción de la base de datos
@@ -146,11 +175,11 @@
         </div>
         <ul class="nav-links">
           <li><a>¡Hola! <?=$user['name']?></a></li>
-          <li><a href="index.php?favoritos=<?=$favoritos = false; echo $favoritos; ?> ">Mis favoritos</a></li>
+          <li><a href="favorites.php" >Mis favoritos</a></li>
           <li><a href="logout.php">Cerrar sesión</a></li>
         </ul>
       </nav>
-      <?php if($favoritos == false) : ?>
+      <?php if(false == false) : ?>
         <div class="principal">
           <div class="izquierda">
             <form class="contenedor" style="height:130px; width : 500px;" action="index.php" method="post">
@@ -220,7 +249,9 @@
                   foreach($articulos->channel->item as $noticia){
                     $fecha = date("d/m/Y - ", strtotime($noticia->pubDate));?>
                     <article>
-                        <h5><a href="<?php echo $noticia->link; ?>"><?php echo $noticia->title; ?></a></h5>
+                      <form class="" action="index.html" method="post">
+                        <h5><a href="<?php echo $noticia->link; ?>"><?php echo $noticia->title; ?></a>  <a style="color:red;"href="index.php?favorito=<?php echo $noticia->link; ?>">★</a></h5>
+                      </form>
                         <?php echo $fecha; ?>
                         <?php echo $noticia->description; ?>
                     </article>
