@@ -5,6 +5,7 @@
 
   if(isset($_SESSION['user_id'])) {
 
+    //Se encarga de extrer la información del usuario desde la base de datos
     $records = $conn->prepare('SELECT id, name, email, password, suscriptions, wallpapers FROM users WHERE id = :id');
     $records->bindParam(':id', $_SESSION['user_id']);
     $records->execute();
@@ -19,6 +20,7 @@
     $mensaje = '';
     $favoritos = false;
 
+    //Función que permite agregar una suscripción a la base de datos
     $suscripciones = $user['suscriptions'];
     if(!empty($_POST['suscripcion'])){
       $suscripcion_a_agregar = $_POST['suscripcion'];
@@ -39,6 +41,8 @@
       }
 
     }
+
+    //Función que permite eliminar una suscripción de la base de datos
     $flag = '';
     if(!empty($_GET['suscription'])) {
       $suscripcion_a_eliminar = $_GET['suscription'];
@@ -57,7 +61,7 @@
       }
     }
 
-    //Para el fondo de pantalla
+    //Función que permite cambiar el fondo de pantalla
     $mensajito = '';
     $destino = '';
     if(!empty($user['wallpapers']) || $user['wallpapers'] != NULL || $user['wallpapers'] != '') {
@@ -77,7 +81,7 @@
       }
     }
 
-    //Para filtrar
+    //Función que permite filtrar el contenido de noticias teniendo en cuenta la suscripción
     $filtro = '';
     if(!empty($_POST['filtro'])) {
       $filtro = $_POST['filtro'];
@@ -88,9 +92,6 @@
     if(!empty($_POST['total_noticias'])) {
       $max_noticias = $_POST['total_noticias'];
     }
-
-    $total_noticias = 0;
-
   }
 
 ?>
@@ -177,7 +178,7 @@
               <div class="opciones">
                 <form class="" action="index.php" method="post">
                   <label for="">Número de noticias que desee ver por suscripción</label><br>
-                  <input type="number" min="1" name="total_noticias" value="10">
+                  <input type="number" min="1" name="total_noticias" value="<?= $max_noticias?>">
                   <input type="submit" name="" value="Confirmar">
                 </form>
                 <div class="filtrar">
@@ -210,12 +211,12 @@
             <?php
 
               if(!empty($suscripciones) && $filtro == '') {
-                echo "<h1>MIS NOTICIAS ($total_noticias)</h1>";
                 $arreglo = explode(",", $suscripciones);
+                $total = count($arreglo)*$max_noticias;
+                echo "<h1>MIS NOTICIAS ($total)</h1>";
                 foreach($arreglo as $pagina_suscripcion){
                   $articulos = simplexml_load_string(file_get_contents($pagina_suscripcion));
                   $num_noticia=1;
-                  $total_noticias = $total_noticias + $max_noticias;
                   foreach($articulos->channel->item as $noticia){
                     $fecha = date("d/m/Y - ", strtotime($noticia->pubDate));?>
                     <article>
@@ -228,13 +229,12 @@
                         break;
                     }
                   }
+                  echo $max_noticias;
                 }
-                echo $total_noticias;
               } else if($filtro != '') {
-                echo "<h1>MIS NOTICIAS de $filtro</h1>";
+                echo "<h1>MIS NOTICIAS de $filtro ($max_noticias)</h1>";
                 $articulos = simplexml_load_string(file_get_contents($filtro));
                 $num_noticia=1;
-                $max_noticias=10;
                 foreach($articulos->channel->item as $noticia){
                   $fecha = date("d/m/Y - ", strtotime($noticia->pubDate));?>
                   <article>
