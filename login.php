@@ -1,6 +1,7 @@
 <?php
   session_start();
 
+  //Verifica si el usuario ya está con una sesión iniciada para redirigirlo al index
   if (isset($_SESSION['user_id'])) {
     header('Location: /Proyecto_RSS');
   }
@@ -8,6 +9,7 @@
   require 'database.php';
   //require_once 'app/init.php';
 
+  //Función que permite validar los datos de inicio de sesión y llevarlo posteriormente al lobby
   if(!empty($_POST['email']) && !empty($_POST['password'])) {
     $records = $conn->prepare('SELECT id, email, password FROM users WHERE email=:email');
     $records->bindParam(':email', $_POST['email']);
