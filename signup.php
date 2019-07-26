@@ -8,8 +8,10 @@
 
   $message = '';
 
+  //Se encarga de validar que el usuario haya rellenado todos los campos solicitados
   if(!empty($_POST['email']) && !empty($_POST['password']) && !empty($_POST['confirm_password']) && !empty($_POST['name'])) {
 
+    //Se extraen todos los emails de los usuarios registrados y se pasa a verificar si el que se está ingresando ya existe en la base de datos
     $consulta = $conn->prepare("SELECT email FROM users WHERE email = :email");
     $consulta->bindParam(':email', $_POST['email']);
     $consulta->execute();
@@ -17,6 +19,7 @@
 
 
     if($results == '') {
+      //Si las contraseñas ingresadas por el usuario coinciden se procede a registrar el usuario a la base de datos
       if($_POST['password'] == $_POST['confirm_password']){
         $sql = "INSERT INTO users (name, email, password) VALUES (:name, :email, :password)";
         $stmt = $conn->prepare($sql);
